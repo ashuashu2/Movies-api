@@ -1,0 +1,38 @@
+[
+    {
+      "email": "ashubirthare.123@gmail.com",
+      "password": "ashu1151",
+      "profilePictureUrl": "https://example.com/poster1.jpg",
+      "username": "ashu@1",
+      "nickname": "ashu",
+      "phoneNo": 55455125151
+     
+    },
+    {
+        "email": "keshubirthare.123@gmail.com",
+        "password": "keshukeshu1",
+        "profilePictureUrl": "https://example.com/poster1.jpg",
+        "username": "keshu@1",
+        "nickname": "keshu",
+      "phoneNo": 555121215151
+
+       
+      },{
+        "email": "abhibirthare.123@gmail.com",
+        "password": "abhiai1",
+        "profilePictureUrl": "https://example.com/poster1.jpg",
+        "username": "abhi@1",
+        "nickname": "abhi",
+      "phoneNo": 52121215125151
+
+       
+      },{
+        "email": "saiyambirthare.123@gmail.com",
+        "password": "saiyasaiyam1",
+        "profilePictureUrl": "https://example.com/poster1.jpg",
+        "username": "saiyam@1",
+        "nickname": "saiyam",
+      "phoneNo": 55425151
+
+       
+      }]
