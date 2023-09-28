@@ -14,9 +14,12 @@ const globalErrorHandler = require("./middlewares/global.error.middlerware")
 
 
 app.get("/",(req,res)=>{
-    res.json("i m lives")
+    res.json("i m live")
 })
 
+app.get("/ashu",(req,res)=>{
+    res.json("i m ashu")
+})
 
 app.use(express.json())
 connectDB(process.env.mongo_pass);
