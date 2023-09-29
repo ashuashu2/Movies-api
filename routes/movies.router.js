@@ -15,15 +15,143 @@ try {
 } 
 
 
-movieRouter.get('/allMovie', async (req, res) => {
+movieRouter.get('/allMovies', async (req, res) => {
   try {
 
     const findAllMovies = await readMovies();
-    res.json(findAllMovies);
+    res.json({findAllMovies , nbhits :findAllMovies.length });
   } catch (error) {
     res.status(404).json({ error: 'Movies not available' });
   }
 });
+
+
+
+
+async  function sortMoviesByReleaseYears(){
+  try {
+    const movies = await movieModel.find({}).sort({releaseYear:1})
+  
+    return movies
+    
+  } catch (error) {
+    console.log("something went wrong")
+  }
+  } 
+  
+  
+  movieRouter.get('/releaseYear', async (req, res) => {
+    try {
+  
+      const findAllMovies = await sortMoviesByReleaseYears();
+      res.json(findAllMovies);
+    } catch (error) {
+      res.status(404).json({ error: 'Movies not available' });
+    }
+  });
+  
+
+
+
+async function findMovieByTitle(title) {
+  try {
+    const movie = await movieModel.findOne({title: title });
+    if (movie) {
+      return movie;
+    } else {
+      throw new Error("Movie not found")
+    }
+  } catch (error) {
+    throw error;
+  }
+}
+
+
+
+
+
+
+movieRouter.get('/name/:title', async (req, res) => {
+  try {
+    const title = req.params.title;
+    const movie = await findMovieByTitle(title);
+    if (movie) {
+      res.json(movie);
+    } else {
+      res.status(404).json({ error: 'movie not found' });
+    }
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to fetch movie' });
+  }
+});
+
+
+
+
+
+async function findMoviesByGenre(genre) {
+  try {
+    const movies = await movieModel.find({genre: genre });
+    if (movies) {
+      return movies;
+    } else {
+      throw new Error("Movies not found")
+    }
+  } catch (error) {
+    throw error;
+  }
+}
+
+movieRouter.get('/genreType/:genre', async (req, res) => {
+  try {
+    const genre = req.params.genre;
+    const movies = await findMoviesByGenre(genre);
+    if (movies) {
+      res.json({movies, nbhits:movies.length});
+    } else {
+      res.status(404).json({ error: 'movies not found' });
+    }
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to fetch movies' });
+  }
+});
+
+
+
+
+
+async function findMovieById(id) {
+  try {
+    const movie = await movieModel.findById(id);
+    if (movie) {
+     
+      return movie;
+    } else {
+      throw new Error("Movie not found")
+    }
+  } catch (error) {
+    throw error;
+  }
+}
+
+movieRouter.get('/:id', async (req, res) => {
+  try {
+    const id = req.params.id
+    console.log(id)
+
+    const movie = await findMovieById(id);
+    console.log(movie)
+
+    if (movie) {
+      res.json(movie);
+    } else {
+      res.status(404).json({ error: 'movie not found' });
+    }
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to fetch movie' });
+  }
+});
+
 
  
  async function addRatingAndReview(movieId, userId, rating, reviewText) {
@@ -94,6 +222,65 @@ movieRouter.get('/allMovie', async (req, res) => {
 
 
 
+
+
+
+  async function updateMovieDetails(title, updatedMovieDetails) {
+    try {
+      const movie = await movieModel.findOne({ title });
+      if (movie) {
+        Object.assign(movie, updatedMovieDetails);
+        const updatedmovie = await movie.save();
+        console.log(updatedmovie)
+        return updatedmovie;
+      } else {
+        throw new Error("movie not found");
+      }
+    } catch (error) {
+      throw error;
+    }
+  }
+  
+  movieRouter.post('/update-details/:title', async (req, res) => {
+    try {
+      const title = req.params.title;
+      const updatedMovieDetails = req.body;
+      console.log(updatedMovieDetails)
+      const updatedmovie = await updateMovieDetails(title, updatedMovieDetails);
+      res.json(updatedmovie);
+    } catch (error) {
+      res.status(404).json({ error: 'movie not updated' });
+    }
+  });
+
+
+
+
+
+
+  async function deleteMovieHandler(id) {
+    try {
+      const movie = await movieModel.findByIdAndDelete(id);
+      console.log({movie})
+     const availableMovies = await movieModel.find({})
+       
+       
+        return availableMovies;
+      
+    } catch (error) {
+      throw error;
+    }
+  }
+  
+  movieRouter.post('/delete/:id', async (req, res) => {
+    try {
+      const id = req.params.id;
+      const availableMovies = await deleteMovieHandler(id);
+      res.json({availableMovies, totle: availableMovies.length});
+    } catch (error) {
+      res.status(404).json({ error: 'movie not updated' });
+    }
+  });
 
 
   module.exports = movieRouter
