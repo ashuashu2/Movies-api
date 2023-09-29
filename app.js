@@ -14,7 +14,7 @@ const globalErrorHandler = require("./middlewares/global.error.middlerware")
 
 
 app.get("/",(req,res)=>{
-    res.json("i m live")
+    res.send("i m live")
 })
 
 app.get("/ashu",(req,res)=>{
