@@ -3,7 +3,27 @@ const express = require("express");
 const movieRouter = express.Router();
 const movieModel = require("../models/movieModel")
 
- 
+async  function readMovies(){
+try {
+  const movies = await movieModel.find({})
+
+  return movies
+  
+} catch (error) {
+  console.log("something went wrong")
+}
+} 
+
+
+movieRouter.get('/allMovie', async (req, res) => {
+  try {
+
+    const findAllMovies = await readMovies();
+    res.json(findAllMovies);
+  } catch (error) {
+    res.status(404).json({ error: 'Movies not available' });
+  }
+});
 
  
  async function addRatingAndReview(movieId, userId, rating, reviewText) {
