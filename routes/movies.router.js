@@ -283,4 +283,38 @@ movieRouter.get('/:id', async (req, res) => {
   });
 
 
+
+   async function addMovieHandler(newMovie){
+    const isMovieExist = await movieModel.findOne({title : newMovie.title})
+    if(isMovieExist ){
+      console.log("movie already exist")
+    }else{
+      const updateMovie = new movieModel(newMovie);
+      const saveMovie = await updateMovie.save()
+      const movies = await movieModel.find({})
+  
+      return{ saveMovie ,  movies } ;
+
+    }
+    
+ 
+
+   }
+
+
+  movieRouter.post("/create",async(req,res)=>{
+    const newMovie = req.body;
+    try {
+      const {movies , saveMovie} = await addMovieHandler(newMovie);
+    res.json({TotleMovies :  movies.length , newMovie  : saveMovie  })
+      
+    } catch (error) {
+      res.json("movie already exist")
+      
+    }
+    
+
+  })
+
+
   module.exports = movieRouter
