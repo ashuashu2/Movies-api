@@ -272,7 +272,7 @@ movieRouter.get('/:id', async (req, res) => {
     }
   }
   
-  movieRouter.post('/delete/:id', async (req, res) => {
+  movieRouter.delete('/delete/:id', async (req, res) => {
     try {
       const id = req.params.id;
       const availableMovies = await deleteMovieHandler(id);
