@@ -178,8 +178,10 @@ movieRouter.get('/:id', async (req, res) => {
       throw error;
     }
   }
+
+
   
-  movieRouter.post('/:movieId/rating', async (req, res) => {
+  movieRouter.post('/:movieId/reviews', async (req, res) => {
     try {
       const movieId = req.params.movieId;
       const { userId, rating, review } = req.body;
