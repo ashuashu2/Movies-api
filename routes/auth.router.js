@@ -8,27 +8,16 @@ const authVerify = require("../middlewares/auth.middleware")
 
 
 
- const users = [
-      {username:"ashutosh@1", password:"ashuashu"},
-      {username:"abhishek@1", password:"abhiabhi"}  
-      ]
 
 
 
  async function signupHandler(newUserDetails) {
   const emailOfUser = newUserDetails.email;
-  console.log(emailOfUser )
-  const password = newUserDetails.password
-  console.log(password )
 
-
-        const token  = jwt.sign({userId : emailOfUser},process.env.SECREAT,{expiresIn:"1h"})
-  console.log(token )
-
-       const  userExits =  await userModel.findOne({email :emailOfUser});
-        console.log(userExits)
-     
-        if(userExits){
+  const password = newUserDetails.password;
+   const token  = jwt.sign({userId : emailOfUser},process.env.SECREAT,{expiresIn:"1h"})
+    const  userExits =  await userModel.findOne({email :emailOfUser});
+     if(userExits){
         console.log("the email is already exits in databse")
        }else{
          const salt  = await bcrypt.genSalt(10);
@@ -46,9 +35,6 @@ const authVerify = require("../middlewares/auth.middleware")
       const updateUser  = new userModel(newUser );
       const saveUser = await updateUser.save()
       console.log("save")
-     
-
-
       return { saveUser,token }
 
       }
@@ -91,19 +77,12 @@ const authVerify = require("../middlewares/auth.middleware")
               return user
         
             }else{
-              res.json({error:"please check the password again"})
+              console.log("please check the password again")
             }
         
       }
 
     }
-
-
-
-
-
-
-
 
 
     authRouter.post("/login",authVerify,async(req,res)=>{
